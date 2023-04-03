@@ -42,7 +42,7 @@ window.addEventListener("beforeunload", () => {
 
 window.addEventListener("load", () => {
   port.open(() => {
-    // port.write("001p001");
+    // port.write("001p005");
     if (port) conn.innerHTML = "Conexión abierta";
 
     parser.on("data", (data) => {
@@ -114,7 +114,9 @@ control.addEventListener("submit", (e) => {
       receive.removeChild(receiveSerialRPMElement);
     }
   }
-  // window.location.href = "./plot.html";
+  setTimeout(() => {
+    // window.location.href = "./plot.html";
+  }, 2000);
 });
 
 ipcRenderer.on("data-from-server", (e, d) => {
