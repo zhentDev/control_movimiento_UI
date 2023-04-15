@@ -1,4 +1,5 @@
 const { BrowserWindow, ipcMain, app } = require("electron");
+const path = require("path");
 
 let mainWindow;
 
@@ -12,15 +13,19 @@ const turnLeft = () => {
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 900,
+    minWidth: 1200,
+    minHeight: 900,
     webPreferences: {
       nodeIntegration: true,
+      nodeIntegrationInSubFrames: true,
       contextIsolation: false,
     },
   });
 
+  mainWindow.maximize();
+
   mainWindow.loadFile("src/views/index.html");
+  // mainWindow.setSimpleFullScreen(true);
 
   app.whenReady().then(() => {
     mainWindow.webContents.on("did-finish-load", () => {

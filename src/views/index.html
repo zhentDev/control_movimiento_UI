@@ -35,115 +35,126 @@
         </ul>
       </nav>
     </div>
-    <div class="box">
-      <form id="control">
-        <div class="controlVelocity">
-          <div class="velocity" style="--clr: #6eff3e">
-            <div class="field">
-              <div class="inputField">
-                <span>RPM</span>
-                <input
-                  type="number"
-                  required
-                  autofocus
-                  name="rpm"
-                  id="rpm"
-                  class="inputValues time"
-                  min="0"
-                  max="120"
-                  step="0.1"
-                  placeholder="Velocidad"
-                />
-                <span>rpm</span>
-              </div>
-              <div class="inputField">
-                <span>TIME</span>
-                <input
-                  type="number"
-                  required
-                  name="time"
-                  id="time"
-                  class="inputValues rpm"
-                  min="0"
-                  max="100"
-                  placeholder="Tiempo"
-                />
-                <span>seg</span>
-              </div>
-              <div class="turn">
-                <input type="radio" name="direction" id="left" />
-                <label for="left">left</label>
-                <input type="radio" name="direction" id="center" />
-                <!-- <label for="center">off</label> -->
-                <input type="radio" name="direction" id="right" />
-                <label for="right">right</label>
+    <div class="boxes">
+      <div class="box">
+        <form id="control">
+          <div class="controlVelocity">
+            <div class="velocity" style="--clr: #6eff3e">
+              <div class="field">
+                <div class="inputField">
+                  <span>RPM</span>
+                  <input
+                    type="number"
+                    required
+                    autofocus
+                    name="rpm"
+                    id="rpm"
+                    class="inputValues time"
+                    min="0"
+                    max="120"
+                    step="0.1"
+                    placeholder="Velocidad"
+                  />
+                  <span>rpm</span>
+                </div>
+                <div class="inputField">
+                  <span>TIME</span>
+                  <input
+                    type="number"
+                    required
+                    name="time"
+                    id="time"
+                    class="inputValues rpm"
+                    min="0"
+                    max="100"
+                    placeholder="Tiempo"
+                  />
+                  <span>seg</span>
+                </div>
+                <div class="turn">
+                  <input type="radio" name="direction" id="left" />
+                  <label for="left">left</label>
+                  <div>
+                    <input type="radio" name="direction" id="center" />
+                    <label for="center">off</label>
+                  </div>
+                  <input type="radio" name="direction" id="right" />
+                  <label for="right">right</label>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="buttons">
-          <a href="#" style="--clr: #1e9bff"
-            ><span><input type="submit" id="send" value="Enviar" /></span><i></i
-          ></a>
-        </div>
-        <span id="conn">Conexión cerrada</span>
-        <h4>Serial Monitor</h4>
-        <div class="serialMonitor">
-          <span id="receive"></span>
-        </div>
-      </form>
+          <div class="buttons">
+            <a href="#" style="--clr: #1e9bff"
+              ><span><input type="submit" id="send" value="Enviar" /></span
+              ><i></i
+            ></a>
+          </div>
+          <span id="conn">Conexión cerrada</span>
+          <h4>Serial Monitor</h4>
+          <div class="serialMonitor">
+            <span id="receive"></span>
+          </div>
+        </form>
+      </div>
+
+      <script>
+        const inputValues = document.querySelectorAll(".inputValues");
+        const errorMessage = document.createElement("div");
+        errorMessage.classList = "toast";
+        document.body.appendChild(errorMessage);
+
+        let time = inputValues[1];
+        time.addEventListener("input", (e) => {
+          if (e.target.value === 99.99) time.setAttribute("value", "100");
+          if (e.target.value > 101 || e.target.value < 0) {
+            time.style.boxShadow = `0 0 25px #ff1867`;
+            errorMessage.textContent =
+              "¡Valor invalido!, el máximo valor de tiempo es: 100seg";
+            errorMessage.style.time = "fixed";
+            errorMessage.style.right = "250px";
+            setTimeout(() => {
+              e.target.value = "";
+              time.style.boxShadow = `none`;
+              setTimeout(() => {
+                errorMessage.style.right = "-300px";
+              }, 3000);
+            }, 500);
+          } else if (e.target.value >= 0) {
+            time.style.boxShadow = `0 0 25px #1e9bff`;
+            errorMessage.textContent = "";
+            errorMessage.style.right = "-300px";
+          }
+        });
+
+        let rpm = inputValues[0];
+        rpm.addEventListener("input", (e) => {
+          if (e.target.value > 120 || e.target.value < 0) {
+            rpm.style.boxShadow = `0 0 25px #ff1867`;
+            errorMessage.textContent =
+              "Valor invalido, el máximo valor de velocidad es: 120rpm";
+            errorMessage.style.time = "fixed";
+            errorMessage.style.right = "250px";
+            setTimeout(() => {
+              e.target.value = "";
+              rpm.style.boxShadow = `none`;
+              setTimeout(() => {
+                errorMessage.style.right = "-300px";
+              }, 3000);
+            }, 500);
+          } else if (e.target.value >= 0) {
+            rpm.style.boxShadow = `0 0 25px #1e9bff`;
+          }
+        });
+      </script>
+
+      <script src="./app.js"></script>
+      <iframe
+        src="plotImport.html"
+        width="400px"
+        height="300px"
+        frameborder="0"
+      ></iframe>
     </div>
-
-    <script>
-      const inputValues = document.querySelectorAll(".inputValues");
-      const errorMessage = document.createElement("div");
-      errorMessage.classList = "toast";
-      document.body.appendChild(errorMessage);
-
-      let time = inputValues[1];
-      time.addEventListener("input", (e) => {
-        if (e.target.value === 99.99) time.setAttribute("value", "100");
-        if (e.target.value > 101 || e.target.value < 0) {
-          time.style.boxShadow = `0 0 25px #ff1867`;
-          errorMessage.textContent =
-            "¡Valor invalido!, el máximo valor de tiempo es: 100seg";
-          errorMessage.style.time = "fixed";
-          errorMessage.style.right = "250px";
-          setTimeout(() => {
-            e.target.value = "";
-            time.style.boxShadow = `none`;
-            setTimeout(() => {
-              errorMessage.style.right = "-300px";
-            }, 3000);
-          }, 500);
-        } else if (e.target.value >= 0) {
-          time.style.boxShadow = `0 0 25px #1e9bff`;
-          errorMessage.textContent = "";
-          errorMessage.style.right = "-300px";
-        }
-      });
-
-      let rpm = inputValues[0];
-      rpm.addEventListener("input", (e) => {
-        if (e.target.value > 120 || e.target.value < 0) {
-          rpm.style.boxShadow = `0 0 25px #ff1867`;
-          errorMessage.textContent =
-            "Valor invalido, el máximo valor de velocidad es: 120rpm";
-          errorMessage.style.time = "fixed";
-          errorMessage.style.right = "250px";
-          setTimeout(() => {
-            e.target.value = "";
-            rpm.style.boxShadow = `none`;
-            setTimeout(() => {
-              errorMessage.style.right = "-300px";
-            }, 3000);
-          }, 500);
-        } else if (e.target.value >= 0) {
-          rpm.style.boxShadow = `0 0 25px #1e9bff`;
-        }
-      });
-    </script>
-
-    <script src="./app.js"></script>
   </body>
 </html>

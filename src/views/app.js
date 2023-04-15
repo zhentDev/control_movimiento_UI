@@ -99,6 +99,14 @@ control.addEventListener("submit", (e) => {
   if (timeValue.length == 2) timeValue = "0" + timeValue;
   if (rpmValue.length == 2) rpmValue = "0" + rpmValue;
 
+
+  if (positionValuePrevious - positionValue > 0)
+    stringToSend = rpmValue + "i" + positionValue;
+  else if (positionValuePrevious - positionValue < 0)
+    stringToSend = rpmValue + "d" + positionValue;
+  else stringToSend = rpmValue + "p" + positionValue;
+  
+
   if (left.checked) stringToSend = rpmValue + "i" + timeValue;
   else if (right.checked) stringToSend = rpmValue + "d" + timeValue;
   else stringToSend = rpmValue + "p" + timeValue;
@@ -114,9 +122,9 @@ control.addEventListener("submit", (e) => {
       receive.removeChild(receiveSerialRPMElement);
     }
   }
-  setTimeout(() => {
-    // window.location.href = "./plot.html";
-  }, 2000);
+  // setTimeout(() => {
+  //   window.location.href = "./plot.html";
+  // }, 2000);
 });
 
 ipcRenderer.on("data-from-server", (e, d) => {

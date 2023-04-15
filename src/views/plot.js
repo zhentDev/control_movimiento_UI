@@ -1,11 +1,12 @@
-const { SerialPort } = require("serialport");
-
-const port = new SerialPort({
-  path: "COM4",
-  baudRate: 115200,
-});
-
+// const { SerialPort } = require("serialport");
 const { ReadlineParser } = require("@serialport/parser-readline");
+const { port } = require("./app");
+
+// const port = new SerialPort({
+//   path: "COM4",
+//   baudRate: 115200,
+// });
+
 const parser = port.pipe(new ReadlineParser({ delimiter: "\n\r" }));
 let receiveSerial = "";
 
@@ -45,14 +46,15 @@ window.addEventListener("load", () => {
   });
 });
 
-// const dataJson = require("../../data.json");
-// let i = 1;
-// const dataFilter = dataJson.filter((data, _, array) => {
-//   if (i === 1) return true;
-//   if (i < array.length) {
-//     i++;
-//     return parseInt(data.rpm) - parseInt(array[i - 1].rpm) < 30;
-//   }
-// });
-// console.log(dataJson);
-// console.log(dataFilter);
+const dataJson = require("../../data.json");
+const { port } = require("./app");
+let i = 1;
+const dataFilter = dataJson.filter((data, _, array) => {
+  if (i === 1) return true;
+  if (i < array.length) {
+    i++;
+    return parseInt(data.rpm) - parseInt(array[i - 1].rpm) < 30;
+  }
+});
+console.log(dataJson);
+console.log(dataFilter);

@@ -27,7 +27,8 @@
     <div>
       <canvas id="myChart" width="800px" height="400px"></canvas>
     </div>
-
+    
+    <script src="./plot.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
       const ctx = document.getElementById("myChart");
@@ -59,22 +60,21 @@
         myChart.update();
       };
 
-      // const x = Array.from({ length: 100 }, (_, i) => i + 1);
-      // const y = x.map((x) => 226.8 * Math.pow(x, -0.94));
+      const x = Array.from({ length: 100 }, (_, i) => i + 1);
+      const y = x.map((x) => 226.8 * Math.pow(x, -0.94));
 
-      // let data = [];
-      // y.map((element, i) => {
-      //   data.push({ time: i, rpm: element });
-      // });
+      let data = [];
+      y.map((element, i) => {
+        data.push({ time: i, rpm: element });
+      });
 
-      i = 1;
+      let j = 1;
       setInterval(() => {
-        if (i < dataJson.length) {
-          show(dataJson[i]);
-          i++;
+        if (j < dataJson.length) {
+          show(dataJson[j]);
+          j++;
         }
       }, 100);
     </script>
-    <script src="./plot.js"></script>
   </body>
 </html>
